@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>Hangman</title>
+  <link rel="stylesheet" type="text/css" href="hangman.css">
+  <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Indie+Flower" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div style= "width:20%; float: left; margin-top: 20%; margin-left: 10%">
+
+    <center>
+        <canvas id="stickman">This Text will show if the Browser does NOT support HTML5 Canvas tag</canvas>
+    </center>
+
+  </div>
+
+  <div style="width:33%; float: right; padding-right: 37%;">
+
+      <h1>HANGMAN</h1>
+
+      <h2 id="getStarted"> Press Any Key to Get Started </h2>
+
+      <div id="wordGuessed">
+
+      </div>
+
+      <h3> Number of Guesses Remaining </h3>
+
+      <div id="guessesRemaining">
+
+      </div>
+
+      <h3> Letters Already Guessed </h3>
+
+      <div id="alreadyGuessedLetter">
+
+      </div> 
+
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script>
+
+    var words = ["classroom", "pencil", "desk", "globe", "teacher", "students", "notebook", "computer", "homework"];
+
+    var lives = 10;
+
+    var lettersGuessed = [];
+
+    var answerArray = [];
+
+    var isGameStarted = false;
+
+    var isUserWonGame = false;
+
+    var word = words[Math.floor(Math.random()*words.length)];
+
+    for (var i = 0; i < word.length; i++) {
+
+        $("#wordGuessed").append('<span class="underscore" id=' + i + '>_ </span>');
+    }
+
+    $('#guessesRemaining').html(lives);   
+
+    document.onkeyup = function(event) {
+
+        if(isGameStarted === false ){
+            isGameStarted = true;
+            $("#getStarted").html("Current Word");
+
+        } 
+        else if(isGameStarted){
+
+            var letter = event.key.toLowerCase();  
+
+            var isLetterAlreadyGuessed = lettersGuessed.includes(letter);
+
+            lettersGuessed.push(letter);  
+
+            var isLetterFound = word.includes(letter);
+
+            if(isLetterFound === false && isLetterAlreadyGuessed === false){  
+                lives = lives - 1;
+                document.getElementById("guessesRemaining").innerHTML = lives;
+            } 
+
+            else if(isLetterFound === true && isLetterAlreadyGuessed === true){
+            } //do nothing  
+
+            else if(isLetterFound === true && isLetterAlreadyGuessed === false){ 
+              //r yi div de goster
+              for (var i = 0; i < word.length; i++) {
+                  if(letter === word[i]){  
+                      $('#'+i).html(letter);
+                  }
+              }
+            } 
+            else if(isLetterFound === false && isLetterAlreadyGuessed === true){ 
+            } //do nothing
+
+            if(isLetterAlreadyGuessed === false){
+                $("#alreadyGuessedLetter").append(letter.toUpperCase() + ' ');  
+            }
+            var isLetterRemaining = false;
+            $('.underscore').each(function(index) {
+                 if($(this).text().includes('_')){
+                   isLetterRemaining = true; 
+                 }
+            });
+
+            if(isLetterRemaining === false){
+              isUserWonGame = true;
+            } 
+            
+            if(lives === 0 || isUserWonGame) {  
+                resetGame();
+            }
+             animate(); 
+      }
+    };
+
+    function resetGame(){
+        word = words[Math.floor(Math.random() * words.length)];
+        $("#wordGuessed").html('');
+        for (var i = 0; i < word.length; i++) {
+          $("#wordGuessed").append('<span class="underscore" id=' + i + '>_ </span>');
+        }  
+        lives = 10; 
+        $('#guessesRemaining').html(lives);   
+        lettersGuessed = [];
+        answerArray = [];
+        isUserWonGame = false;
+        $("#alreadyGuessedLetter").html('');
+        context.clearRect(0, 0, 400, 400);
+        canvas();
+    }
+        // Animate man
+    var animate = function () {
+      var drawMe = lives;
+      drawArray[drawMe]();
+    }
+  
+     // Hangman
+    canvas =  function(){
+      myStickman = document.getElementById("stickman");
+      context = myStickman.getContext('2d');
+      context.beginPath();
+      context.strokeStyle = "#fff";
+      context.lineWidth = 2;
+    };
+    
+    head = function(){
+      myStickman = document.getElementById("stickman");
+      context = myStickman.getContext('2d');
+      context.beginPath();
+      context.arc(60, 25, 10, 0, Math.PI*2, true);
+      context.stroke();
+    }
+      
+    draw = function($pathFromx, $pathFromy, $pathTox, $pathToy) {
+      
+      context.moveTo($pathFromx, $pathFromy);
+      context.lineTo($pathTox, $pathToy);
+      context.stroke(); 
+   }
+
+   frame1 = function() {
+     draw (0, 150, 150, 150);
+   };
+   
+   frame2 = function() {
+     draw (10, 0, 10, 600);
+   };
+  
+   frame3 = function() {
+     draw (0, 5, 70, 5);
+   };
+  
+   frame4 = function() {
+     draw (60, 5, 60, 15);
+   };
+  
+   torso = function() {
+     draw (60, 36, 60, 70);
+   };
+  
+   rightArm = function() {
+     draw (60, 46, 100, 50);
+   };
+  
+   leftArm = function() {
+     draw (60, 46, 20, 50);
+   };
+  
+   rightLeg = function() {
+     draw (60, 70, 100, 100);
+   };
+  
+   leftLeg = function() {
+     draw (60, 70, 20, 100);
+   };
+  
+  drawArray = [rightLeg, leftLeg, rightArm, leftArm,  torso,  head, frame4, frame3, frame2, frame1]; 
+  canvas();
+  
+  </script>
+</body>
+</html>

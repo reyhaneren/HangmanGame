@@ -1,0 +1,44 @@
+body {
+	background-image: url("http://news.umanitoba.ca/wp-content/uploads/2013/10/iStock_000019012355Medium-1200x898.jpg");
+	background-size: 100%;
+	background-position: 0% 100%;
+	background-attachment: fixed;
+}
+
+h1 {
+	text-align: center;
+	color: white;
+	font-size: 60px;
+	font-family: 'Gloria Hallelujah', cursive;
+	margin: auto;
+}
+
+h2 {
+	text-align: center;
+	color: white;
+	font-size: 30px;
+}
+
+h3 {
+	text-align: center;
+	color: white;
+	font-size: 30px;
+}
+
+#wordGuessed {
+	text-align: center;
+	color: white;
+	font-size: 25px;
+}
+
+#guessesRemaining {
+	text-align: center;
+	color: white;
+	font-size: 25px;
+}
+
+#alreadyGuessedLetter {
+	text-align: center;
+	color: white;
+	font-size: 25px;
+}
