@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en-us">
 
@@ -24,19 +25,21 @@
 
       <h1>HANGMAN</h1>
 
+      <h2 id="wins" style="visibility: hidden; margin-top: 0px;">Wins</h2>
+
       <h2 id="getStarted"> Press Any Key to Get Started </h2>
 
       <div id="wordGuessed">
 
       </div>
 
-      <h3> Number of Guesses Remaining </h3>
+      <h2> Number of Guesses Remaining </h2>
 
       <div id="guessesRemaining">
 
       </div>
 
-      <h3> Letters Already Guessed </h3>
+      <h2> Letters Already Guessed </h2>
 
       <div id="alreadyGuessedLetter">
 
@@ -63,6 +66,8 @@
 
     var word = words[Math.floor(Math.random()*words.length)];
 
+    var numberOfWins = 0;
+
     for (var i = 0; i < word.length; i++) {
 
         $("#wordGuessed").append('<span class="underscore" id=' + i + '>_ </span>');
@@ -75,6 +80,7 @@
         if(isGameStarted === false ){
             isGameStarted = true;
             $("#getStarted").html("Current Word");
+            $("#wins").css('visibility','visible')
 
         } 
         else if(isGameStarted){
@@ -96,7 +102,6 @@
             } //do nothing  
 
             else if(isLetterFound === true && isLetterAlreadyGuessed === false){ 
-              //r yi div de goster
               for (var i = 0; i < word.length; i++) {
                   if(letter === word[i]){  
                       $('#'+i).html(letter);
@@ -109,6 +114,8 @@
             if(isLetterAlreadyGuessed === false){
                 $("#alreadyGuessedLetter").append(letter.toUpperCase() + ' ');  
             }
+  
+
             var isLetterRemaining = false;
             $('.underscore').each(function(index) {
                  if($(this).text().includes('_')){
@@ -119,6 +126,12 @@
             if(isLetterRemaining === false){
               isUserWonGame = true;
             } 
+
+            if(isUserWonGame) {
+              numberOfWins = numberOfWins + 1;  
+              $("#wins").html('Wins ' + numberOfWins); 
+
+            }
             
             if(lives === 0 || isUserWonGame) {  
                 resetGame();
